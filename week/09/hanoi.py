@@ -31,10 +31,9 @@ def make_move(towers, num_disks, source, aux, target):
         make_move(towers, num_disks-1, source, target, aux)
         
         # Move the bottom-most requested disk from the source pole to the target pole
-        if len(towers.poles[source]) > 0:
-            towers.move_disk(source, target)
-            print("Moved from pole {} to pole {}".format(source, target))
-            towers.show()
+        towers.move_disk(source, target)
+        print("Moved from pole {} to pole {}".format(source, target))
+        towers.show()
             
         # Recursively move the other requested disks back from the auxiliary pole to the target pole
         make_move(towers, num_disks-1, aux, source, target)
