@@ -26,14 +26,17 @@ def make_move(towers, num_disks, source, aux, target):
     """ Recursive method for solving Towers of Hanoi 
     """ 
     if num_disks > 0:
-        # switch target depending on odd or even # of disks
+        
+        # Recursively move all but the bottom-most of the requested disks to the auxiliary pole
         make_move(towers, num_disks-1, source, target, aux)
-        # source and target established, make a move
+        
+        # Move the bottom-most requested disk from the source pole to the target pole
         if len(towers.poles[source]) > 0:
             towers.move_disk(source, target)
             print("Moved from pole {} to pole {}".format(source, target))
-            towers.show() #--> possible because of global scope of variable
-        # switch source depending on odd or even # of disks
+            towers.show()
+            
+        # Recursively move the other requested disks back from the auxiliary pole to the target pole
         make_move(towers, num_disks-1, aux, source, target)
 
 
