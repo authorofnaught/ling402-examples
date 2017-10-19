@@ -1,33 +1,45 @@
 #!/usr/bin/python3
 
+START = 0
+MID = 1
+GOAL = 2
+
 class Towers:
     """ Towers class with three towers for solving 
     Towers of Hanoi
     """
     def __init__(self, num_disks):
         self.num_disks = num_disks
-        self.start = []
-        self.middle = []
-        self.goal = []
+        self.poles = [[],[],[]]
         for i in range(num_disks):
-            self.start.append(num_disks - i)
+            self.poles[START].append(num_disks - i)
 
     def show(self):
-        print('{}\n{}\n{}\n'.format(self.start, self.middle, self.goal))
+        print('{}\n{}\n{}\n'.format(self.poles[START], self.poles[MID], self.poles[GOAL]))
+
+    def move_disk(self, from_pole, to_pole):
+        moved_disk = self.poles[from_pole].pop()
+        self.poles[to_pole].append(moved_disk)
 
 
-def move(n, source, aux, target):
+def make_move(towers, num_disks, source, aux, target):
     """ Recursive method for solving Towers of Hanoi 
     """ 
-    if n > 0:
+    if num_disks > 0:
         # switch target depending on odd or even # of disks
-        move(n-1, source, target, aux)
+        make_move(towers, num_disks-1, source, target, aux)
         # source and target established, make a move
-        if len(source) > 0:
-            target.append(source.pop())
+        if len(towers.poles[source]) > 0:
+            towers.move_disk(source, target)
+            print("Moved from pole {} to pole {}".format(source, target))
             towers.show() #--> possible because of global scope of variable
         # switch source depending on odd or even # of disks
-        move(n-1, aux, source, target)
+        make_move(towers, num_disks-1, aux, source, target)
+
+
+def solve(towers):
+    num_disks = towers.num_disks
+    make_move(towers, num_disks, START, MID, GOAL)
 
 
 def play_towers_of_hanoi():
@@ -41,10 +53,9 @@ def play_towers_of_hanoi():
         else:
             print("Try again. Please enter an integer value.")
 
-    global towers # 'global' make variable visible outside of this method
     towers = Towers(num_disks)
     towers.show()
-    move(len(towers.start), towers.start, towers.middle, towers.goal) 
+    solve(towers)
 
 
 if __name__ == '__main__':
