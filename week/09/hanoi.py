@@ -14,8 +14,9 @@ class Towers:
         for i in range(num_disks):
             self.poles[START].append(num_disks - i)
 
-    def show(self):
-        print('{}\n{}\n{}\n'.format(self.poles[START], self.poles[MID], self.poles[GOAL]))
+#    def show(self):
+    def __str__(self):
+        return '{}\n{}\n{}\n'.format(self.poles[START], self.poles[MID], self.poles[GOAL])
 
     def move_disk(self, from_pole, to_pole):
         moved_disk = self.poles[from_pole].pop()
@@ -33,7 +34,7 @@ def make_move(towers, num_disks, source, aux, target):
         # Move the bottom-most requested disk from the source pole to the target pole
         towers.move_disk(source, target)
         print("Moved from pole {} to pole {}".format(source, target))
-        towers.show()
+        print(towers)
             
         # Recursively move the other requested disks back from the auxiliary pole to the target pole
         make_move(towers, num_disks-1, aux, source, target)
@@ -56,7 +57,7 @@ def play_towers_of_hanoi():
             print("Try again. Please enter an integer value.")
 
     towers = Towers(num_disks)
-    towers.show()
+    print(towers)
     solve(towers)
 
 
