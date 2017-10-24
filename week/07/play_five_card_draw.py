@@ -2,45 +2,43 @@
 
 import sys
 from carddeck import ShuffledDeck
-from cardrules import poker_hand, high_card
+from pokerrules import PokerHand
 
 def play_five_card_draw(players=4):
-
+    """ Play a game of five card draw
+    """
     deck = ShuffledDeck()
-    
-    hands = [list() for _ in range(players)]
 
+    # deal the cards
+    hands = [list() for _ in range(players)]
     for i in range(5):
         for hand in hands:
             hand.append(deck.draw())
 
-    best_hands = [poker_hand(hand) for hand in hands]
+    # make hands a list of PokerHand objects
+    hands = [PokerHand(player, hand) for player, hand in enumerate(hands)]
 
-    for player in range(players):
-        print("\nPlayer",player+1,"has a",best_hands[player].name+":")
-        for card in hands[player]:
-            print('\t',card.value,card.suit)
-    
-    high_hand = max(best_hands)
+    for hand in hands:
+        print("\nPlayer {} has a {}:".format(hand.player, hand.rank.name))
+        print(hand)
+
+    # winners can be determined using the comparison 
+    # operators which were overridden for the 
+    # PokerHand class
     winners = []
-    if best_hands.count(high_hand) == 1:
-        winners.append(best_hands.index(high_hand))
-    else:
-        highest_card = -1
-        for player in range(players):
-            if best_hands[player] == high_hand:
-                player_high_card = high_card(hands[player])
-                if player_high_card > highest_card:
-                    highest_card = player_high_card
-                    winners = [player]
-                elif player_high_card == highest_card:
-                    winners.append(player)
-    if len(winners) == 1:
-        print("\nPlayer",winners[0]+1,"wins with a",best_hands[winners[0]].name,"!")
-    elif len(winners) > 1:
-        print("\nIt's a",best_hands[winners[0]].name,"tie between players",
-                " and ".join([str(w+1) for w in winners]),"!")
+    winning_hand = None
+    for hand in hands:
+        if not winning_hand or hand > winning_hand:
+            winning_hand = hand
+            winners = [winning_hand]
+        elif hand == winning_hand:
+            winning_hand
+            winners.append(hand)
 
+    if len(winners) == 1:
+        print("Player {} wins with a {}!".format(winners[0].player, winners[0].rank.name))
+    else:
+        print("Players {} tie with a {}!".format(' and '.join([w.player for w in winners]), winners[0].rank.name))
 
 
 if __name__ == '__main__':
