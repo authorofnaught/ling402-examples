@@ -60,7 +60,7 @@ class Card:
 
     # returns a string representation of this card
     def __str__(self):
-        return self.value+' '+self.suit
+        return self.value+self.suit
 
     # override ==, !=, >, >=, <, <= operators s.t. we can 
     # compare this card to another

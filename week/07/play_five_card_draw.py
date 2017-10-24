@@ -16,7 +16,7 @@ def play_five_card_draw(players=4):
             hand.append(deck.draw())
 
     # make hands a list of PokerHand objects
-    hands = [PokerHand(player, hand) for player, hand in enumerate(hands)]
+    hands = [PokerHand(player+1, hand) for player, hand in enumerate(hands)]
 
     for hand in hands:
         print("\nPlayer {} has a {}:".format(hand.player, hand.rank.name))
@@ -36,9 +36,9 @@ def play_five_card_draw(players=4):
             winners.append(hand)
 
     if len(winners) == 1:
-        print("Player {} wins with a {}!".format(winners[0].player, winners[0].rank.name))
+        print("\nPlayer {} wins with a {}!\n".format(winners[0].player, winners[0].rank.name))
     else:
-        print("Players {} tie with a {}!".format(' and '.join([w.player for w in winners]), winners[0].rank.name))
+        print("\nPlayers {} tie with a {}!\n".format(' and '.join([w.player for w in winners]), winners[0].rank.name))
 
 
 if __name__ == '__main__':

@@ -30,8 +30,7 @@ class PokerHand:
 
     # returns a string representation of this hand
     def __str__(self):
-        return '\n'.join(['{}{}'.format(
-            card.value, card.suit) for card in self.cards])
+        return '\n'.join(['\t'+str(card) for card in sorted(self.cards)])
 
     # override ==, !=, >, >=, <, <= operators s.t. we can 
     # compare this hand to another
