@@ -30,11 +30,9 @@ def find_synonym(token, tag):
                 return lemma.name()
     return token
 
-def main():
-    text = udhr.raw('English-Latin1').lower()
-#    text = "How now brown cow?"
+def main(text):
     for sent in text.split('\n'):
-        tokens = nltk.word_tokenize(sent)
+        tokens = [token.lower() for token in nltk.word_tokenize(sent)]
         tokens = nltk.pos_tag(tokens)
         new_text = ""
         for token, tag in tokens:
@@ -43,4 +41,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    if len(sys.argv) > 1:
+        main(sys.argv[1])
+    else:
+        main(udhr.raw('English-Latin1'))
