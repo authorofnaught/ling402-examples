@@ -2,15 +2,20 @@
 
 import nltk, sys
 
+#################################################
+# This script will print out accuracy on the test 
+# set and then sgement text from stdin into 
+# sentences.
+#################################################
 
+
+# Features
+#################################################
 def punct_features(tokens, i):
-#    return {'punct': tokens[i]
-#            }
-    return {'next-word-capitalized':tokens[i+1][0].isupper(),
-            'prev-word':tokens[i-1].lower(),
-            'punct':tokens,
-            'prev-word-is-one-char':len(tokens[i-1]) == 1
-            }
+    features = {}
+    features['punct'] = tokens[i]
+    return features
+#################################################
 
 sents = nltk.corpus.treebank_raw.sents()
 tokens = []
@@ -21,14 +26,18 @@ for sent in sents:
     offset += len(sent)
     boundaries.add(offset-1)
 
+# We are obtaining features for each .?! in the 
+# corpus, and then we will decide whether that 
+# token indicates a sentence boundary.
+#################################################
 featuresets = [(punct_features(tokens, i), (i in boundaries))
         for i in range(1, len(tokens)-1)
         if tokens[i] in '.?!']
+#################################################
 
 size = int(len(featuresets) * 0.1)
 train_set, test_set = featuresets[size:], featuresets[:size]
-#classifier = nltk.NaiveBayesClassifier.train(train_set)
-classifier = nltk.DecisionTreeClassifier.train(train_set)
+classifier = nltk.NaiveBayesClassifier.train(train_set)
 print(nltk.classify.accuracy(classifier, test_set))
 
 def segment_sentences(words):
@@ -42,10 +51,14 @@ def segment_sentences(words):
         sents.append(words[start:])
     return sents
 
-#text = sys.stdin.read()
-for line in sys.stdin:
-    words = nltk.word_tokenize(line.strip())+[" "]
-    sents = segment_sentences(words)
-    print(sents)
+text = sys.stdin.read().strip()
+text = text.replace('.', ' . ')
+text  = text.replace('?', ' ? ')
+text  = text.replace('!', ' ! ')
+words = text.split()+[" "]
+sents = segment_sentences(words)
+for sent in sents:
+    print(' '.join(sent))
+
 
 
