@@ -645,8 +645,6 @@
   (NP our/PRP$ work/NN force/NN today/NN)
   ./.)
 
-(S ''/'')
-
 (S
   (NP Yields/NNS)
   on/IN

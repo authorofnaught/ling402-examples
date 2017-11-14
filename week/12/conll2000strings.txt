@@ -813,8 +813,6 @@ force NN I-NP
 today NN I-NP
 . . O
 
-'' '' O
-
 Yields NNS B-NP
 on IN O
 money-market JJ B-NP
